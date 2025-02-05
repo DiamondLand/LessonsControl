@@ -1,5 +1,3 @@
-from loguru import logger
-
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
@@ -9,6 +7,7 @@ from aiogram.utils.markdown import hlink
 from database.services import get_or_create_user_service
 
 from functions.greeting import send_greeting
+from functions.mailing import send_check_for_users
 
 from elements.inline.other_inline import support_button
 from elements.keybord.kb import cancel_kb
@@ -28,7 +27,7 @@ async def start_cmd(message: Message, state: FSMContext):
         return await message.answer(
             text=f"{send_greeting(username=user_data.firstname)}\
                 \nПреподаватель проведёт перекличку через этого бота во время проведения занятий, не теряйтесь 💤!"
-        )
+            )
     await message.answer(
         text=f"{send_greeting(username=message.from_user.first_name)}\
             \nДля контроля посещаемости необходимо указать <b>имя</b> и <b>фамилию</b>, разделяя пробелом:\
@@ -42,6 +41,7 @@ async def start_cmd(message: Message, state: FSMContext):
 @router.message(Command("info"))
 async def info_cmd(message: Message, state: FSMContext):
     # Если стадия существует, выходим из неё
+    await send_check_for_users(message.bot)
     if await state.get_state() is not None:
         await message.answer(
             text="🔎✨",

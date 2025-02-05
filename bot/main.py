@@ -11,7 +11,7 @@ from loguru import logger
 from config.cfg import cfg, ADMIN_CHATS
 from middleware.throttling import ThrottlingMiddleware 
 from events import error_handler, states_group
-from handlers import commands_handler, registration
+from handlers import commands_handler, registration, check
 from handlers.utils import mailing
 
 bot = Bot(
@@ -34,6 +34,7 @@ async def main():
         states_group.router,
         commands_handler.router,
         registration.router,
+        check.router,
         mailing.router,
     )
 

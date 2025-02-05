@@ -1,3 +1,5 @@
+import time
+
 from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from config.advertisement import support_link
@@ -21,6 +23,19 @@ def reg_button() -> InlineKeyboardBuilder:
         InlineKeyboardButton(
             text="Всё верно 💚",
             callback_data="finish_registration"
+        )
+    )
+    return builder
+
+
+def check_button() -> InlineKeyboardBuilder:
+    timestamp = int(time.time())  # Текущее время в секундах (UNIX timestamp)
+
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        InlineKeyboardButton(
+            text="Присутствую ✅",
+            callback_data=f"check_{timestamp}"
         )
     )
     return builder

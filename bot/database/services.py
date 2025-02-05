@@ -28,7 +28,7 @@ async def get_users_with_full_info_service():
         firstname__isnull=False, 
         lastname__isnull=False,
         group__isnull=False
-        ).all()
+    ).all()
     result = [
         {
             'user_id': entry.user_id,
@@ -73,7 +73,7 @@ async def update_user_service(user_id: int, firstname: str = None, lastname: str
     """
     user = await User.get_or_none(user_id=user_id)
     if not user:
-        return {'error': 'User not found'}
+        return {'error': 'Пользователь не найден!'}
 
     if firstname:
         user.firstname = firstname
@@ -104,14 +104,14 @@ async def create_attendance_service(user_id: int):
     """
     user = await User.get_or_none(user_id=user_id)
     if not user:
-        return {'error': 'User not found'}
+        return {'error': 'Пользователь не найден!'}
 
     today = date.today()
 
     # Проверяем, есть ли уже запись на сегодня
     existing_attendance = await Attendance.get_or_none(user=user, date=today)
     if existing_attendance:
-        return {'error': 'Attendance already recorded for today'}
+        return {'error': 'Вы уже отмечались на сегодняшних занятиях!'}
 
     await Attendance.create(user=user, date=today)
     return {'message': 'Attendance recorded', 'user_id': user_id, 'date': today.isoformat()}
@@ -132,7 +132,7 @@ async def get_user_attendance_service(user_id: int, start_date: date, end_date: 
     """
     user = await User.get_or_none(user_id=user_id)
     if not user:
-        return {'error': 'User not found'}
+        return {'error': 'Пользователь не найден!'}
 
     attendances = await Attendance.filter(user=user, date__range=[start_date, end_date]).values_list("date", flat=True)
     
@@ -152,7 +152,7 @@ async def check_attendance_today(user_id: int):
     """
     user = await User.get_or_none(user_id=user_id)
     if not user:
-        return {'error': 'User not found'}
+        return {'error': 'Пользователь не найден!'}
 
     today = date.today()
     attendance = await Attendance.get_or_none(user=user, date=today)
