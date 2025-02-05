@@ -9,8 +9,10 @@ from elements.keybord.kb import cancel
 router = Router()
 
 
-class InsertText(StatesGroup):
-    text = State()
+class Registration(StatesGroup):
+    name_lastname = State()
+    group = State()
+    save = State()
 
 
 class Utils(StatesGroup):
@@ -19,7 +21,8 @@ class Utils(StatesGroup):
 
 not_in_state_filter = ~StateFilter(
     Utils.mailing,
-    InsertText.text
+    Registration.name_lastname,
+    Registration.group,
 )
 
 
@@ -28,6 +31,6 @@ not_in_state_filter = ~StateFilter(
 async def cancel_handler(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
-        text="Запись текста прервана!", 
+        text="Запись текста прервана ❗", 
         reply_markup=ReplyKeyboardRemove()
     )

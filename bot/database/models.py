@@ -1,6 +1,8 @@
+import datetime
+
 from tortoise import fields
 from tortoise.models import Model
-from datetime import datetime
+
 
 class BaseORM(Model):
     class Meta:
@@ -12,10 +14,11 @@ class BaseORM(Model):
 
 
 class User(BaseORM): # Для пользователей
-    user_id = fields.BigIntField(pk=True)
+    user_id = fields.BigIntField()
 
-    firstname = fields.CharField(max_lenght=300, null=True)
-    lastname = fields.CharField(max_lenght=300, null=True)
+    firstname = fields.CharField(max_length=300, null=True)
+    lastname = fields.CharField(max_length=300, null=True)
+    group = fields.IntField(null=True)
 
 
 class Attendance(BaseORM):  # Посещаемость

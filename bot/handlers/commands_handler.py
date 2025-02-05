@@ -11,23 +11,31 @@ from database.services import get_or_create_user_service
 from functions.greeting import send_greeting
 
 from elements.inline.other_inline import support_button
-from events.states_group import Utils
+from elements.keybord.kb import cancel_kb
+from events.states_group import Utils, Registration
 from config.advertisement import support_link
 
 router = Router()
 
 
 # --- Основная панель --- #
-@router.message(Command("start"))
+@router.message(Command("start", "registration"))
 async def start_cmd(message: Message, state: FSMContext):
-    try:
-        await get_or_create_user_service(user_id=message.from_user.id)
-    except Exception as _ex:
-        logger.debug(f"Не удалось проверить аккаунт: {_ex}")
-
-    await message.answer(
-        text=f"{send_greeting(username=message.from_user.first_name)}"
+    user_data = await get_or_create_user_service(
+        user_id=message.from_user.id
     )
+    if user_data and user_data.firstname and user_data.lastname:
+        return await message.answer(
+            text=f"{send_greeting(username=user_data.firstname)}\
+                \nПреподаватель проведёт перекличку через этого бота во время проведения занятий, не теряйтесь 💤!"
+        )
+    await message.answer(
+        text=f"{send_greeting(username=message.from_user.first_name)}\
+            \nДля контроля посещаемости необходимо указать <b>имя</b> и <b>фамилию</b>, разделяя пробелом:\
+            \n\n<i>❗ Изменить эти данные будет нельзя. Перепроверьте всё несколько раз ❗</i>",
+        reply_markup=cancel_kb()
+    )
+    await state.set_state(state=Registration.name_lastname)
 
 
 # --- Информационнная панель --- #

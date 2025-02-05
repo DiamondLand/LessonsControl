@@ -1,11 +1,11 @@
 cfg = {
     "SETTINGS": {
-        "token": "",
+        "token": "7542058031:AAGJ3-bX2W_oki5Z2U1tqZPY__VbtPNskss",
         "testing_token": "",
+        "redis_url": "redis://localhost:6379",
         "version": "1.0.0",
-        "name": "... | бот"
+        "name": "Вступительные по математики | посещаемость"
     }
 }
 
-CHANNEL_ID = 0
 ADMIN_CHATS = [0, 0, 0] 

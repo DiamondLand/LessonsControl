@@ -17,6 +17,32 @@ async def get_users_service():
 
 
 @atomic()
+async def get_users_with_full_info_service():
+    """
+    Получает всех пользователей, у которых указаны все поля.
+
+    Returns:
+        list: Список пользователей с полными данными.
+    """
+    users_data = await User.filter(
+        firstname__isnull=False, 
+        lastname__isnull=False,
+        group__isnull=False
+        ).all()
+    result = [
+        {
+            'user_id': entry.user_id,
+            'firstname': entry.firstname,
+            'lastname': entry.lastname,
+            'group': entry.group
+        }
+        for entry in users_data
+    ]
+    
+    return result
+
+
+@atomic()
 async def get_or_create_user_service(user_id: int):
     """
     Получает пользователя по идентификатору или создает нового, если он не существует.
@@ -28,18 +54,19 @@ async def get_or_create_user_service(user_id: int):
         dict: Словарь с идентификатором пользователя.
     """
     user_data, created = await User.get_or_create(user_id=user_id)
-    return {'user_id': user_data.user_id}
+    return user_data
 
 
 @atomic()
-async def update_user_name_service(user_id: int, firstname: str = None, lastname: str = None):
+async def update_user_service(user_id: int, firstname: str = None, lastname: str = None, group: int = None):
     """
     Обновляет имя и/или фамилию пользователя.
 
     Args:
         user_id (int): Идентификатор пользователя.
-        firstname (str, optional): Новое имя.
-        lastname (str, optional): Новая фамилия.
+        firstname (str, optional): Имя.
+        lastname (str, optional): Фамилия.
+        group (int: optinal): Группа
 
     Returns:
         dict: Обновленный пользователь.
@@ -52,12 +79,15 @@ async def update_user_name_service(user_id: int, firstname: str = None, lastname
         user.firstname = firstname
     if lastname:
         user.lastname = lastname
+    if group:
+        user.group = group
 
     await user.save()
     return {
         'user_id': user.user_id,
         'firstname': user.firstname,
-        'lastname': user.lastname
+        'lastname': user.lastname,
+        'group': user.group
     }
 
 

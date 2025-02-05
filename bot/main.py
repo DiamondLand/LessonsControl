@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.bot import DefaultBotProperties
+from aiogram.fsm.storage.redis import RedisStorage
 
 from tortoise import Tortoise, run_async
 from loguru import logger
@@ -10,17 +11,18 @@ from loguru import logger
 from config.cfg import cfg, ADMIN_CHATS
 from middleware.throttling import ThrottlingMiddleware 
 from events import error_handler, states_group
-from handlers import commands_handler
+from handlers import commands_handler, registration
 from handlers.utils import mailing
 
 bot = Bot(
-    token=cfg["SETTINGS"]["testing_token"], 
+    token=cfg["SETTINGS"]["token"], 
     default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 bot.config = cfg
 bot.ADMIN_CHATS = ADMIN_CHATS
 
-dp = Dispatcher()
+storage = RedisStorage.from_url(url=cfg['SETTINGS']['redis_url'])
+dp = Dispatcher(storage=storage)
 
 
 # --- Подгрузка модулей ТГ бота --- #
@@ -31,6 +33,7 @@ async def main():
         error_handler.router,
         states_group.router,
         commands_handler.router,
+        registration.router,
         mailing.router,
     )
 
