@@ -74,8 +74,11 @@ async def generate_attendance_report(bot: Bot):
 
     # Отправляем файл пользователю
     for chat_id in ADMIN_CHATS:
-        await bot.send_document(
-            chat_id=chat_id,
-            caption=f"Посещаемость за {today.strftime('%d.%m.%Y')}",
-            document=FSInputFile(path=file_path, filename=f"{today.strftime('%d%m%Y')}.xlsx")
-        )
+        try:
+            await bot.send_document(
+                chat_id=chat_id,
+                caption=f"Посещаемость за {today.strftime('%d.%m.%Y')}",
+                document=FSInputFile(path=file_path, filename=f"{today.strftime('%d%m%Y')}.xlsx")
+            )
+        except:
+            pass

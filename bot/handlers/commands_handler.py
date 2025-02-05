@@ -7,7 +7,6 @@ from aiogram.utils.markdown import hlink
 from database.services import get_or_create_user_service
 
 from functions.greeting import send_greeting
-from functions.report import generate_attendance_report
 
 from elements.inline.other_inline import support_button
 from elements.keybord.kb import cancel_kb
@@ -41,7 +40,6 @@ async def start_cmd(message: Message, state: FSMContext):
 @router.message(Command("info"))
 async def info_cmd(message: Message, state: FSMContext):
     # Если стадия существует, выходим из неё
-    await generate_attendance_report(message.bot)
     if await state.get_state() is not None:
         await message.answer(
             text="🔎✨",
