@@ -50,7 +50,10 @@ async def info_cmd(message: Message, state: FSMContext):
 
     botname = message.bot.config['SETTINGS']['name']
     message_text = (
-        f"<b>СПРАВКА {hlink(botname, support_link)} v{message.bot.config['SETTINGS']['version']}:</b>"
+        f"<b>СПРАВКА {hlink(botname, "https://t.me/+7gUBJMlHgPNkZmMy")}:</b>"
+        f"\n\n1. Перед началом использования зарегистрируйтесь (/start), введя фамилию, имя и номер группы."
+        f"\n2. Во время занятия бот пришлёт зарегистрированным пользователям кнопку проверки присутствия. Нажать её можно в течении часа."
+        f"\n3. Отметиться можно раз в день (даже если вы придёте и утром, и вечером)."
         f"\n\n Чтобы связаться с поддержкой бота, присоединитесь к <b>{hlink('группе', support_link)}</b> и задайте вопрос в нужном топике."
     )
 

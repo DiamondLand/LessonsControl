@@ -1,7 +1,7 @@
 import time
 
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, ReplyKeyboardRemove
+from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from functions.formating import remove_inline_button
@@ -22,22 +22,19 @@ async def check_in_func(callback: CallbackQuery, state: FSMContext):
 
     if current_time - button_time > 3600:  # 3600 секунд = 1 час
         return await callback.message.edit_text(
-            text="<b>Время для отметки истекло ⏳!</b>\
-                \nВы можете отметить присутствие только в течение часа после начала занятия...",
-            reply_markup=ReplyKeyboardRemove()
+            text="<b>Время для отметки истекло ⏳</b>\
+                \nВы можете отметить присутствие только в течение часа после начала занятия..."
         )
 
     # Записываем посещаемость
     result = await create_attendance_service(user_id=callback.from_user.id)
     if "error" in result:
         return await callback.message.edit_text(
-            text=result["error"],
-            reply_markup=ReplyKeyboardRemove()
+            text=f"Здорово, что вы с нами, однако, {result['error'].lower()}"
         )
 
     await callback.message.edit_text(
         text=f"<b>Вы успешно отметились ✅</b>\
-            \nВнимательно слушайте материал и не отвлекайтесь!",
-        reply_markup=ReplyKeyboardRemove()
+            \nВнимательно слушайте материал и не отвлекайтесь!"
     )
     await state.clear()
