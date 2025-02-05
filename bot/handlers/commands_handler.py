@@ -7,7 +7,7 @@ from aiogram.utils.markdown import hlink
 from database.services import get_or_create_user_service
 
 from functions.greeting import send_greeting
-from functions.mailing import send_check_for_users
+from functions.report import generate_attendance_report
 
 from elements.inline.other_inline import support_button
 from elements.keybord.kb import cancel_kb
@@ -41,7 +41,7 @@ async def start_cmd(message: Message, state: FSMContext):
 @router.message(Command("info"))
 async def info_cmd(message: Message, state: FSMContext):
     # Если стадия существует, выходим из неё
-    await send_check_for_users(message.bot)
+    await generate_attendance_report(message.bot)
     if await state.get_state() is not None:
         await message.answer(
             text="🔎✨",
@@ -50,7 +50,7 @@ async def info_cmd(message: Message, state: FSMContext):
 
     botname = message.bot.config['SETTINGS']['name']
     message_text = (
-        f"<b>СПРАВКА {hlink(botname, "https://t.me/+7gUBJMlHgPNkZmMy")}:</b>"
+        f"<b>СПРАВКА {hlink(botname, 'https://t.me/+7gUBJMlHgPNkZmMy')}:</b>"
         f"\n\n1. Перед началом использования зарегистрируйтесь (/start), введя фамилию, имя и номер группы."
         f"\n2. Во время занятия бот пришлёт зарегистрированным пользователям кнопку проверки присутствия. Нажать её можно в течении часа."
         f"\n3. Отметиться можно раз в день (даже если вы придёте и утром, и вечером)."

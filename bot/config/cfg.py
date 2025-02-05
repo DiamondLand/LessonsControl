@@ -8,4 +8,4 @@ cfg = {
     }
 }
 
-ADMIN_CHATS = [0, 0, 0] 
+ADMIN_CHATS = [872278858, 0, 0] 

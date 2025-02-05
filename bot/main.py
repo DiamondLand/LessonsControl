@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
@@ -20,7 +21,10 @@ bot = Bot(
 )
 bot.config = cfg
 bot.ADMIN_CHATS = ADMIN_CHATS
-
+bot.ASSETS_PATH = 'bot/assets/'  # Папка для сохранения файлов
+if not os.path.exists(bot.ASSETS_PATH):
+    os.makedirs(bot.ASSETS_PATH)
+    
 storage = RedisStorage.from_url(url=cfg['SETTINGS']['redis_url'])
 dp = Dispatcher(storage=storage)
 

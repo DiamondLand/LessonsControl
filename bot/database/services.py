@@ -1,4 +1,6 @@
 from datetime import date
+from typing import List
+
 from tortoise.transactions import atomic
 from .models import User, Attendance
 
@@ -115,6 +117,20 @@ async def create_attendance_service(user_id: int):
 
     await Attendance.create(user=user, date=today)
     return {'message': 'Attendance recorded', 'user_id': user_id, 'date': today.isoformat()}
+
+
+async def get_attendance_for_today(today: date) -> List[Attendance]:
+    """
+    Получает список всех записей о посещаемости на текущий день.
+
+    Args:
+        today (date): Текущая дата для фильтрации.
+
+    Returns:
+        List[Attendance]: Список записей о посещаемости на сегодняшний день.
+    """
+    attendances = await Attendance.filter(date=today).prefetch_related("user").all()
+    return attendances
 
 
 @atomic()
