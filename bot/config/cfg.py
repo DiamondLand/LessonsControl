@@ -1,9 +1,9 @@
 cfg = {
     "SETTINGS": {
-        "token": "7542058031:AAGJ3-bX2W_oki5Z2U1tqZPY__VbtPNskss",
+        "token": "",
         "testing_token": "",
         "redis_url": "redis://localhost:6379",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "name": "Вступительные по математики | посещаемость"
     }
 }

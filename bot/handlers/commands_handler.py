@@ -82,7 +82,7 @@ async def statistic_cmd(message: Message):
 # --- Перейти в рассылку -> Написать текст --- #
 @router.message(Command("mailing", "bin2"))
 async def mailing_cmd(message: Message, state: FSMContext):
-    if int(message.chat.id) in map(int, message.bot.ADMIN_GROUP):
+    if int(message.chat.id) in map(int, message.bot.ADMIN_CHATS):
         # Если стадия существует, выходим из неё
         if await state.get_state() is not None:
             await state.clear()

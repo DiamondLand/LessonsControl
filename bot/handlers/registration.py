@@ -3,6 +3,7 @@ import re
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
+from aiogram.utils.markdown import hlink
 
 from functions.formating import remove_inline_button
 from elements.inline.other_inline import reg_button
@@ -28,11 +29,11 @@ async def registration_name_lastname(message: Message, state: FSMContext):
 
     if len(firstname) < 2:
         return await message.answer(text="Имя должно быть не короче <b>двух русских букв</b>:")
-    if len(lastname) < 4:
-        return await message.answer(text="Фамилия должна быть не короче <b>четырёх русских букв</b>:")
+    if len(lastname) < 3:
+        return await message.answer(text="Фамилия должна быть не короче <b>трёх русских букв</b>:")
 
-    data['firstname'] = firstname
-    data['lastname'] = lastname
+    data['firstname'] = firstname.capitalize()
+    data['lastname'] = lastname.capitalize()
     await state.update_data(data)
 
     await message.answer(
@@ -94,7 +95,7 @@ async def finish_registration(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.message.answer(
-        text="<b>Желаем успешного поступления!</b>\
+        text=f"<b>{hlink('Желаем успешного поступления!', 'https://t.me/+7gUBJMlHgPNkZmMy')}</b>\
             \n\n<i>Во время занятий (четверг с 9 до 10 с 19 до 20), в этом чате мы будем проводить перекличку.</i>",
         reply_markup=ReplyKeyboardRemove()
     )
