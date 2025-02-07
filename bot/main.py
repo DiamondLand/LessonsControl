@@ -38,22 +38,22 @@ dp = Dispatcher(storage=storage)
 # --- Ежедневная проверка и рассылка неактивным --- #
 async def on_startup():
     scheduler = AsyncIOScheduler()
-    # Запуск по четвергам в 09:10
+    # Запуск по четвергам в 09:00
     scheduler.add_job(
         func=send_check_for_users,
-        trigger=CronTrigger(day_of_week='thu', hour=9, minute=10),
+        trigger=CronTrigger(day_of_week='thu', hour=9, minute=00),
         kwargs={'bot': bot}
     )
-    # Запуск по четвергам в 19:10
+    # Запуск по четвергам в 19:00
     scheduler.add_job(
         func=send_check_for_users,
-        trigger=CronTrigger(day_of_week='thu', hour=19, minute=10),
+        trigger=CronTrigger(day_of_week='thu', hour=19, minute=00),
         kwargs={'bot': bot}
     )
-    # Запуск по четвергам в 20:10
+    # Запуск по четвергам в 20:00
     scheduler.add_job(
         func=generate_attendance_report,
-        trigger=CronTrigger(day_of_week='thu', hour=20, minute=10),
+        trigger=CronTrigger(day_of_week='thu', hour=20, minute=00),
         kwargs={'bot': bot}
     )
     scheduler.start()
