@@ -4,6 +4,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
+from config.advertisement import ads_text, on_lesson_ads_text
 from functions.formating import remove_inline_button
 from database.services import create_attendance_service
 
@@ -22,8 +23,9 @@ async def check_in_func(callback: CallbackQuery, state: FSMContext):
 
     if current_time - button_time > 3600:  # 3600 секунд = 1 час
         return await callback.message.edit_text(
-            text="<b>Время для отметки истекло ⏳</b>\
-                \nВы можете отметить присутствие только в течение часа после начала занятия..."
+            text=f"<b>Время для отметки истекло ⏳</b>\
+                \nВы можете отметить присутствие только в течение часа после начала занятия...\
+                \n\n<i>{ads_text}</i>"
         )
 
     # Записываем посещаемость
@@ -34,7 +36,8 @@ async def check_in_func(callback: CallbackQuery, state: FSMContext):
         )
 
     await callback.message.edit_text(
-        text=f"<b>Вы успешно отметились ✅</b>\
-            \nВнимательно слушайте материал и не отвлекайтесь!"
+        text=f"<b>Вы отметились ✅</b>\
+            \nВнимательно слушайте материал и не отвлекайтесь!\
+            \n\n<i>{on_lesson_ads_text}</i>"
     )
     await state.clear()

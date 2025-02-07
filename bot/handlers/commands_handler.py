@@ -13,7 +13,7 @@ from functions.greeting import send_greeting
 from elements.inline.other_inline import support_button
 from elements.keybord.kb import cancel_kb
 from events.states_group import Utils, Registration
-from config.advertisement import support_link
+from config.advertisement import support_link, ads_text
 
 router = Router()
 
@@ -54,7 +54,8 @@ async def info_cmd(message: Message, state: FSMContext):
         f"\n\n1. Перед началом использования зарегистрируйтесь (/start), введя фамилию, имя и номер группы."
         f"\n2. Во время занятия бот пришлёт зарегистрированным пользователям кнопку проверки присутствия. Нажать её можно в течении часа."
         f"\n3. Отметиться можно раз в день (даже если вы придёте и утром, и вечером)."
-        f"\n\n Чтобы связаться с поддержкой бота, присоединитесь к <b>{hlink('группе', support_link)}</b> и задайте вопрос в нужном топике."
+        f"\n\nЧтобы связаться с поддержкой бота, присоединитесь к <b>{hlink('группе', support_link)}</b> и задайте вопрос в нужном топике."
+        f"\n\n<i>{ads_text}</i>"
     )
 
     await message.answer(
